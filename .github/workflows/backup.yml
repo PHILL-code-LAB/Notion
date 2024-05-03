@@ -27,6 +27,7 @@ jobs:
           NOTION_USER_ID: ${{ secrets.NOTION_USER_ID }}
       - name: Checkout backup repo
         uses: actions/checkout@v4
+        ref: main
         with:
           repository: ${{ secrets.REPO_USERNAME }}/${{ secrets.REPO_NAME }}
           token: ${{ secrets.REPO_PERSONAL_ACCESS_TOKEN }}
