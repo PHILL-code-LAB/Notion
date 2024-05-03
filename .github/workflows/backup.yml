@@ -24,7 +24,7 @@ jobs:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_SPACE_ID: ${{ secrets.NOTION_SPACE_ID }}
           NOTION_FILKE_TOKEN: ${{ secrets.NOTION_FILE_TOKEN }}
-
+          NOTION_USER_ID: ${{ secrets.NOTION_USER_ID }}
       - name: Checkout backup repo
         uses: actions/checkout@v4
         with:
