@@ -1,0 +1,679 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>@2021/12/10 更新後版本檢測</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-transparentGray { background-color: rgba(227, 226, 224, 0); }
+.select-value-color-translucentGray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="0c3af6c8-56d9-4dc0-8db7-1b17b97b6e97" class="page sans"><header><h1 class="page-title"><time>@2021/12/10</time> 更新後版本檢測</h1><p class="page-description"></p></header><div class="page-body"><p id="46108159-3845-4a1c-a76d-1535c679cab4" class=""><a href="http://ess-wiki.advantech.com.tw/view/Special:Version">http://ess-wiki.advantech.com.tw/view/Special:Version</a></p><h1 id="4c5e82cf-85d3-4a3a-b496-6f454895afe9" class="">ip: 172.20.12.147</h1><h2 id="f603d5b1-7d97-4492-91fa-203492a4b3c5" class="">MediaWiki License</h2><p id="b908a7c7-fa67-426b-8ba0-2f3549df35d1" class="">This wiki is powered by <a href="https://www.mediawiki.org/"><strong>MediaWiki</strong></a>, copyright © 2001-2021 Magnus Manske, Brion Vibber, Lee Daniel Crocker, Tim Starling, Erik Möller, Gabriel Wicke, Ævar Arnfjörð Bjarmason, Niklas Laxström, Domas Mituzas, Rob Church, Yuri Astrakhan, Aryeh Gregor, Aaron Schulz, Andrew Garrett, Raimond Spekking, Alexandre Emsenhuber, Siebrand Mazeland, Chad Horohoe, Roan Kattouw, Trevor Parscal, Bryan Tong Minh, Sam Reed, Victor Vasiliev, Rotem Liss, Platonides, Antoine Musso, Timo Tijhof, Daniel Kinzler, Jeroen De Dauw, <a href="http://ess-wiki.advantech.com.tw/view/Special:Version/Credits">others</a> and <a href="http://translatewiki.net/wiki/Translating:MediaWiki/Credits">translatewiki.net translators</a>.</p><p id="091dd91e-5828-46a9-80b3-4386cf2cfd80" class="">MediaWiki is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.</p><p id="ced07dbd-ccdf-465b-bdfb-b0a2bb280400" class="">MediaWiki is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p><p id="39b92a9c-2114-48fe-bcc7-c08f3a9b1d94" class="">You should have received <a href="http://ess-wiki.advantech.com.tw/wiki/COPYING">a copy of the GNU General Public License</a> along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA or <a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html">read it online</a>.</p><p id="c8f0afea-36dd-4aef-92ec-add1a22e19dc" class="">
+</p><h2 id="74832711-3fd4-4581-b1a4-86d279724fbb" class="">Installed software</h2><table id="f44bc8a9-b54c-403d-9dc4-ced4e3d3ca9d" class="simple-table"><tbody><tr id="a46b63b4-3c47-44d2-93c7-bd3732a429ce"><td id="k?OG" class="">Product</td><td id="Le}:" class="">Version</td></tr><tr id="0e3a713a-7f70-4f16-bbba-8d2b46489d7b"><td id="k?OG" class=""><a href="https://www.mediawiki.org/">MediaWiki</a></td><td id="Le}:" class="">1.24.2</td></tr><tr id="b404d9bd-e5db-41b5-bd4a-d59e233e748b"><td id="k?OG" class=""><a href="https://php.net/">PHP</a></td><td id="Le}:" class="">5.6.40 (apache2handler)</td></tr><tr id="d6bef727-85ff-47e2-9b17-641a850b408c"><td id="k?OG" class=""><a href="https://mariadb.org/">MariaDB</a></td><td id="Le}:" class="">5.5.5-10.1.37-MariaDB</td></tr></tbody></table><h2 id="f6df46b8-59bd-4c7e-bb0e-683ff5363a6c" class="">Entry point URLs</h2><table id="ae427d94-2dac-4e80-91ec-cb9802c258e8" class="simple-table"><tbody><tr id="70b6c748-867a-4fbb-a952-a6713ae4a6f9"><td id="K:rc" class="">Entry point</td><td id="euwh" class="">URL</td></tr><tr id="b9fd612a-d823-4aca-8e8e-949ccbc97a25"><td id="K:rc" class=""><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:%24wgArticlePath">Article path</a></td><td id="euwh" class=""><a href="http://ess-wiki.advantech.com.tw/view/%241"><code>/view/$1</code></a></td></tr><tr id="6adc1e83-c1ea-4b65-a760-c00c5c6a6e22"><td id="K:rc" class=""><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:%24wgScriptPath">Script path</a></td><td id="euwh" class=""><a href="http://ess-wiki.advantech.com.tw/wiki"><code>/wiki</code></a></td></tr><tr id="c8158bf0-72f9-48fb-b443-398b97dcb4d0"><td id="K:rc" class=""><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:index.php">index.php</a></td><td id="euwh" class=""><a href="http://ess-wiki.advantech.com.tw/wiki/index.php"><code>/wiki/index.php</code></a></td></tr><tr id="f5f800be-7a05-4d65-b95b-a098bdc9cffa"><td id="K:rc" class=""><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:api.php">api.php</a></td><td id="euwh" class=""><a href="http://ess-wiki.advantech.com.tw/wiki/api.php"><code>/wiki/api.php</code></a></td></tr><tr id="37bd00cb-78e8-4e92-bcf8-5aec7a52ca1f"><td id="K:rc" class=""><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:load.php">load.php</a></td><td id="euwh" class=""><a href="http://ess-wiki.advantech.com.tw/wiki/load.php"><code>/wiki/load.php</code></a></td></tr></tbody></table><h2 id="af947fb9-73c0-4b23-9494-6f4bbea6f64a" class="">Installed skins</h2><table id="2816f383-1efe-4ebe-82b8-ced7eb261b8f" class="simple-table"><tbody><tr id="ae2336d1-9cfb-4f3f-bf80-33537cc59dc1"><td id="mnu{" class="">Skin</td><td id="^ZYY" class="">Version</td><td id="JhpW" class="">License</td><td id="~XDJ" class="">Description</td><td id="&lt;cPh" class="">Authors</td></tr><tr id="d2e7d267-8194-4eed-89f1-f8b3ac2e68aa"><td id="mnu{" class=""><a href="https://www.mediawiki.org/wiki/Skin:Cologne_Blue"><strong>Cologne Blue</strong></a></td><td id="^ZYY" class="">–</td><td id="JhpW" class=""><a href="http://ess-wiki.advantech.com.tw/view/Special:Version/License/Cologne_Blue">GPLv2+</a></td><td id="~XDJ" class="">A lightweight skin with minimal formatting</td><td id="&lt;cPh" class="">Lee Daniel Crocker and others</td></tr><tr id="b264c8a5-5bb3-463a-9abf-1c646e72f0fd"><td id="mnu{" class=""><a href="https://www.mediawiki.org/wiki/Skin:Modern"><strong>Modern</strong></a></td><td id="^ZYY" class="">–</td><td id="JhpW" class=""><a href="http://ess-wiki.advantech.com.tw/view/Special:Version/License/Modern">GPLv2+</a></td><td id="~XDJ" class="">A blue/grey theme with sidebar and top bar. Derived from MonoBook.</td><td id="&lt;cPh" class="">River Tarnell and others</td></tr><tr id="6195db2f-f0da-41b0-b63b-96cb2d322444"><td id="mnu{" class=""><a href="https://www.mediawiki.org/wiki/Skin:MonoBook"><strong>MonoBook</strong></a></td><td id="^ZYY" class="">–</td><td id="JhpW" class=""><a href="http://ess-wiki.advantech.com.tw/view/Special:Version/License/MonoBook">GPLv2+</a></td><td id="~XDJ" class="">The classic MediaWiki skin since 2004, named after the black-and-white photo of a book in the page background</td><td id="&lt;cPh" class="">Gabriel Wicke and others</td></tr><tr id="7c8deb8d-a2c3-4084-8470-4503a0fa5199"><td id="mnu{" class=""><a href="https://www.mediawiki.org/wiki/Skin:Vector"><strong>Vector</strong></a></td><td id="^ZYY" class="">–</td><td id="JhpW" class=""><a href="http://ess-wiki.advantech.com.tw/view/Special:Version/License/Vector">GPLv2+</a></td><td id="~XDJ" class="">Modern version of MonoBook with fresh look and many usability improvements</td><td id="&lt;cPh" class="">Trevor Parscal, Roan Kattouw and others</td></tr></tbody></table><h2 id="48c4bae5-42e6-4e71-b63c-73bfdad99162" class="">Installed extensions</h2><table id="6aab8f50-7ed0-485c-8c7e-ec1674a27b14" class="simple-table"><tbody><tr id="b9a88160-4e20-457a-9d9a-b2910bee3c14"><td id="xuX&gt;" class="">Special pages</td><td id="sQiE" class=""></td><td id="WTpm" class=""></td><td id="G[Hp" class=""></td><td id="T=}L" class=""></td></tr><tr id="054da20d-6e3d-4410-b58d-cbc21e4bc41c"><td id="xuX&gt;" class="">Extension</td><td id="sQiE" class="">Version</td><td id="WTpm" class="">License</td><td id="G[Hp" class="">Description</td><td id="T=}L" class="">Authors</td></tr><tr id="7402ea38-c2b3-4d95-9d18-26af96c11eaf"><td id="xuX&gt;" class=""><a href="https://www.mediawiki.org/wiki/Extension:Interwiki"><strong>Interwiki</strong></a></td><td id="sQiE" class="">3.0 20140719</td><td id="WTpm" class=""><a href="http://ess-wiki.advantech.com.tw/view/Special:Version/License/Interwiki">License</a></td><td id="G[Hp" class="">Adds a <a href="http://ess-wiki.advantech.com.tw/view/Special:Interwiki">special page</a> to view and edit the interwiki table</td><td id="T=}L" class="">Stephanie Amanda Stevens, Alexandre Emsenhuber, Robin Pepermans, Siebrand Mazeland, Platonides, Raimond Spekking, Sam Reed, Jack Phoenix, Calimonius the Estrange and others</td></tr><tr id="448270cd-f341-4964-9753-6fc4224e4458"><td id="xuX&gt;" class=""><a href="https://www.mediawiki.org/wiki/Extension:Nuke"><strong>Nuke</strong></a></td><td id="sQiE" class="">1.2.0</td><td id="WTpm" class=""><a href="http://ess-wiki.advantech.com.tw/view/Special:Version/License/Nuke">License</a></td><td id="G[Hp" class="">Gives administrators the ability to <a href="http://ess-wiki.advantech.com.tw/view/Special:Nuke">mass delete</a> pages</td><td id="T=}L" class="">Brion Vibber and Jeroen De Dauw</td></tr><tr id="d5d0fc67-b6b6-4dfd-bdc3-ab1dc62c7321"><td id="xuX&gt;" class=""><a href="https://www.mediawiki.org/wiki/Extension:Renameuser"><strong>Renameuser</strong></a></td><td id="sQiE" class="">–</td><td id="WTpm" class=""><a href="http://ess-wiki.advantech.com.tw/view/Special:Version/License/Renameuser">License</a></td><td id="G[Hp" class="">Adds a <a href="http://ess-wiki.advantech.com.tw/view/Special:RenameUser">special page</a> to rename a user (need <em>renameuser</em> right)</td><td id="T=}L" class="">Ævar Arnfjörð Bjarmason and Aaron Schulz</td></tr><tr id="4ea54c53-9468-4562-95c2-4f80fcc5e41b"><td id="xuX&gt;" class=""></td><td id="sQiE" class=""></td><td id="WTpm" class=""></td><td id="G[Hp" class=""></td><td id="T=}L" class=""></td></tr><tr id="1cad3a43-b087-43f7-965d-a213638cd802"><td id="xuX&gt;" class="">Parser hooks</td><td id="sQiE" class=""></td><td id="WTpm" class=""></td><td id="G[Hp" class=""></td><td id="T=}L" class=""></td></tr><tr id="994fd447-bf60-49bf-b382-78865f97f174"><td id="xuX&gt;" class="">Extension</td><td id="sQiE" class="">Version</td><td id="WTpm" class="">License</td><td id="G[Hp" class="">Description</td><td id="T=}L" class="">Authors</td></tr><tr id="e9c9682d-97a0-4ac1-ba08-1f37e60826dc"><td id="xuX&gt;" class=""><a href="https://www.mediawiki.org/wiki/Extension:Cargo"><strong>Cargo</strong></a></td><td id="sQiE" class="">0.8</td><td id="WTpm" class=""></td><td id="G[Hp" class="">Storage and querying of template data</td><td id="T=}L" class="">Yaron Koren</td></tr><tr id="4eac80f8-667c-4991-bf77-f7ef9f913b2a"><td id="xuX&gt;" class=""><a href="https://www.mediawiki.org/wiki/Extension:Cite/Cite.php"><strong>Cite</strong></a></td><td id="sQiE" class="">–</td><td id="WTpm" class=""><a href="http://ess-wiki.advantech.com.tw/view/Special:Version/License/Cite">GPLv2</a></td><td id="G[Hp" class="">Adds &lt;ref[ name=id]&gt; and &lt;references/&gt; tags, for citations</td><td id="T=}L" class="">Ævar Arnfjörð Bjarmason, Andrew Garrett, Brion Vibber, Marius Hoch, Steve Sanbeg and <a href="http://ess-wiki.advantech.com.tw/view/Special:Version/Credits/Cite">others</a></td></tr><tr id="aa8a42a7-f307-42d6-bf54-c6331a0f8096"><td id="xuX&gt;" class=""><a href="https://www.mediawiki.org/wiki/Extension:Header_Tabs"><strong>Header Tabs</strong></a></td><td id="sQiE" class="">1.1</td><td id="WTpm" class=""><a href="http://ess-wiki.advantech.com.tw/view/Special:Version/License/Header_Tabs">GPL-2.0+</a></td><td id="G[Hp" class="">Adds tabs to the page separating top-level sections</td><td id="T=}L" class=""><a href="http://www.sergeychernyshev.com/">Sergey Chernyshev</a>, Yaron Koren, <a href="http://olivierbeaton.com/">Olivier Finlay Beaton</a> and others</td></tr><tr id="3d6130fb-7ee3-4cfe-b39a-068dfce3457d"><td id="xuX&gt;" class=""><a href="https://www.mediawiki.org/wiki/Extension:ImageMap"><strong>ImageMap</strong></a></td><td id="sQiE" class="">–</td><td id="WTpm" class=""><a href="http://ess-wiki.advantech.com.tw/view/Special:Version/License/ImageMap">License</a></td><td id="G[Hp" class="">Allows client-side clickable image maps using &lt;imagemap&gt; tag</td><td id="T=}L" class="">Tim Starling</td></tr><tr id="34ba6944-68a5-47c1-a893-f501f072805f"><td id="xuX&gt;" class=""><a href="https://www.mediawiki.org/wiki/Extension:InputBox"><strong>InputBox</strong></a></td><td id="sQiE" class="">0.2.0</td><td id="WTpm" class=""></td><td id="G[Hp" class="">Allow inclusion of predefined HTML forms</td><td id="T=}L" class="">Erik Moeller, Leonardo Pimenta, Rob Church, Trevor Parscal and DaSch</td></tr><tr id="2becf812-4daa-4a2b-a607-dc82bb66bdb8"><td id="xuX&gt;" class=""><a href="https://www.mediawiki.org/wiki/Extension:Labeled_Section_Transclusion"><strong>LabeledSectionTransclusion</strong></a></td><td id="sQiE" class="">–</td><td id="WTpm" class=""><a href="http://ess-wiki.advantech.com.tw/view/Special:Version/License/LabeledSectionTransclusion">License</a></td><td id="G[Hp" class="">Adds #lst and #lstx functions and &lt;section&gt; tag, enables marked sections of text to be transcluded</td><td id="T=}L" class="">Steve Sanbeg</td></tr><tr id="13292157-c039-4efb-b2a6-8cea981fd824"><td id="xuX&gt;" class=""><a href="http://www.mediawiki.org/wiki/Extension:MsUpload"><strong>MsUpload</strong></a></td><td id="sQiE" class="">10</td><td id="WTpm" class=""><a href="http://ess-wiki.advantech.com.tw/view/Special:Version/License/MsUpload">GPLv2+</a></td><td id="G[Hp" class="">Enables easy uploads (when available also via drag&amp;drop) for one or multiple files simultaneously</td><td id="T=}L" class=""><a href="http://ess-wiki.advantech.com.tw/view/Special:Versionmailto:msupload%40ratin.de">Martin Schwindl</a> and <a href="https://www.mediawiki.org/wiki/User:Luis_Felipe_Schenone">Luis Felipe Schenone</a></td></tr><tr id="5b4948d5-d723-4909-92c6-9874882d9711"><td id="xuX&gt;" class=""><a href="https://www.mediawiki.org/wiki/Extension:ParserFunctions"><strong>ParserFunctions</strong></a></td><td id="sQiE" class="">1.6.0</td><td id="WTpm" class=""><a href="http://ess-wiki.advantech.com.tw/view/Special:Version/License/ParserFunctions">License</a></td><td id="G[Hp" class="">Enhance parser with logical functions</td><td id="T=}L" class="">Tim Starling, Robert Rohde, Ross McClure and Juraj Simlovic</td></tr><tr id="59a40986-2304-4c55-a40c-971ba254ac7d"><td id="xuX&gt;" class=""><a href="https://www.mediawiki.org/wiki/Extension:Poem"><strong>Poem</strong></a></td><td id="sQiE" class="">–</td><td id="WTpm" class=""></td><td id="G[Hp" class="">Adds &lt;poem&gt; tag for poem formatting</td><td id="T=}L" class="">Nikola Smolenski, Brion Vibber and Steve Sanbeg</td></tr><tr id="3a72cd9e-396e-4c97-b500-4d3f36b5e4a9"><td id="xuX&gt;" class=""><a href="https://www.mediawiki.org/wiki/Extension:Restrict_access_by_category_and_group"><strong>Restrict access by category and group</strong></a></td><td id="sQiE" class="">2.0.1</td><td id="WTpm" class=""></td><td id="G[Hp" class="">Allows to restrict access to pages by users groups and page categories</td><td id="T=}L" class="">Andres Orencio Ramirez Perez</td></tr><tr id="414f4214-5577-48bf-bb20-e86232fa93f8"><td id="xuX&gt;" class=""><a href="https://www.mediawiki.org/wiki/Extension:SyntaxHighlight_GeSHi"><strong>SyntaxHighlight</strong></a></td><td id="sQiE" class="">1.0.8.11-wmf1</td><td id="WTpm" class=""><a href="http://ess-wiki.advantech.com.tw/view/Special:Version/License/SyntaxHighlight">License</a></td><td id="G[Hp" class="">Provides syntax highlighting &lt;syntaxhighlight&gt; using <a href="http://qbnz.com/highlighter/">GeSHi - Generic Syntax Highlighter</a></td><td id="T=}L" class="">Brion Vibber, Tim Starling, Rob Church and Niklas Laxström</td></tr><tr id="e0eaa3b4-c8db-4067-9792-454dbef0631b"><td id="xuX&gt;" class=""><a href="https://www.mediawiki.org/wiki/Extension:Tabber"><strong>Tabber</strong></a></td><td id="sQiE" class="">2.4</td><td id="WTpm" class=""><a href="http://ess-wiki.advantech.com.tw/view/Special:Version/License/Tabber">License</a></td><td id="G[Hp" class="">Allows to create tabs within a page</td><td id="T=}L" class="">Eric Fortin and Alexia E. Smith</td></tr><tr id="bdb06a34-2390-48af-a3e5-758fed013c13"><td id="xuX&gt;" class=""></td><td id="sQiE" class=""></td><td id="WTpm" class=""></td><td id="G[Hp" class=""></td><td id="T=}L" class=""></td></tr><tr id="f2f616f3-ae59-4ae1-8394-7245ddd4e8ae"><td id="xuX&gt;" class="">Media handlers</td><td id="sQiE" class=""></td><td id="WTpm" class=""></td><td id="G[Hp" class=""></td><td id="T=}L" class=""></td></tr><tr id="d7950491-3bb6-4a85-8b01-91aac2fdb95e"><td id="xuX&gt;" class="">Extension</td><td id="sQiE" class="">Version</td><td id="WTpm" class="">License</td><td id="G[Hp" class="">Description</td><td id="T=}L" class="">Authors</td></tr><tr id="2e5de64b-faf7-46ff-969a-d6f5f1c97d2e"><td id="xuX&gt;" class=""><a href="https://www.mediawiki.org/wiki/Extension:PdfHandler"><strong>PDF Handler</strong></a></td><td id="sQiE" class="">–</td><td id="WTpm" class=""><a href="http://ess-wiki.advantech.com.tw/view/Special:Version/License/PDF_Handler">License</a></td><td id="G[Hp" class="">Handler for viewing PDF files in image mode.</td><td id="T=}L" class="">Martin Seidel and Mike Połtyn</td></tr><tr id="3bdb1b92-060f-43ec-92c6-9d396a1379c9"><td id="xuX&gt;" class=""></td><td id="sQiE" class=""></td><td id="WTpm" class=""></td><td id="G[Hp" class=""></td><td id="T=}L" class=""></td></tr><tr id="196567f0-17d5-4ba4-9777-d18a0c75a813"><td id="xuX&gt;" class="">Spam prevention</td><td id="sQiE" class=""></td><td id="WTpm" class=""></td><td id="G[Hp" class=""></td><td id="T=}L" class=""></td></tr><tr id="054069d2-d40a-4038-81be-296ecb8d430b"><td id="xuX&gt;" class="">Extension</td><td id="sQiE" class="">Version</td><td id="WTpm" class="">License</td><td id="G[Hp" class="">Description</td><td id="T=}L" class="">Authors</td></tr><tr id="fd298628-addf-4a5c-801c-ba88eef3fa8f"><td id="xuX&gt;" class=""><a href="https://www.mediawiki.org/wiki/Extension:ConfirmEdit"><strong>ConfirmEdit</strong></a></td><td id="sQiE" class="">1.3</td><td id="WTpm" class=""><a href="http://ess-wiki.advantech.com.tw/view/Special:Version/License/ConfirmEdit">License</a></td><td id="G[Hp" class="">Provides CAPTCHA techniques to protect against spam and password-guessing</td><td id="T=}L" class="">Brion Vibber and others</td></tr><tr id="1285fa28-1917-4f42-a022-3e4135addc02"><td id="xuX&gt;" class=""><a href="https://www.mediawiki.org/wiki/Extension:SpamBlacklist"><strong>SpamBlacklist</strong></a></td><td id="sQiE" class="">–</td><td id="WTpm" class=""></td><td id="G[Hp" class="">Regex-based anti-spam tool allowing to blacklist URLs in pages and email addresses for registered users</td><td id="T=}L" class="">Tim Starling, John Du Hart and Daniel Kinzler</td></tr><tr id="98069539-7b19-4a41-8e04-caeb9ce5c914"><td id="xuX&gt;" class=""><a href="https://www.mediawiki.org/wiki/Extension:Title_Blacklist"><strong>Title Blacklist</strong></a></td><td id="sQiE" class="">1.5.0</td><td id="WTpm" class=""><a href="http://ess-wiki.advantech.com.tw/view/Special:Version/License/Title_Blacklist">License</a></td><td id="G[Hp" class="">Allows administrators to forbid creation of pages and user accounts per a <a href="http://ess-wiki.advantech.com.tw/view/MediaWiki:Titleblacklist">blacklist</a> and <a href="http://ess-wiki.advantech.com.tw/view/MediaWiki:Titlewhitelist">whitelist</a></td><td id="T=}L" class="">Victor Vasiliev and Fran Rogers</td></tr><tr id="cda080cc-7f10-4eb4-9419-c1a2a68e4c93"><td id="xuX&gt;" class=""></td><td id="sQiE" class=""></td><td id="WTpm" class=""></td><td id="G[Hp" class=""></td><td id="T=}L" class=""></td></tr><tr id="9087e707-ca57-4d1b-9ee5-1bbb712b76a8"><td id="xuX&gt;" class="">Other</td><td id="sQiE" class=""></td><td id="WTpm" class=""></td><td id="G[Hp" class=""></td><td id="T=}L" class=""></td></tr><tr id="9d811f70-91f5-476b-9bd4-e66bd6e4d132"><td id="xuX&gt;" class="">Extension</td><td id="sQiE" class="">Version</td><td id="WTpm" class="">License</td><td id="G[Hp" class="">Description</td><td id="T=}L" class="">Authors</td></tr><tr id="8c32faa8-5d2a-4e96-9ab8-c17a8eb455bb"><td id="xuX&gt;" class=""><a href="https://github.com/danielrobbins/mediawiki-consoleoutput"><strong>ConsoleOutput</strong></a></td><td id="sQiE" class="">–</td><td id="WTpm" class=""></td><td id="G[Hp" class="">This extension allows you to display colorized console output in mediawiki</td><td id="T=}L" class="">Daniel Robbins</td></tr><tr id="7416b587-340b-46f7-8331-c8e9e66211b2"><td id="xuX&gt;" class=""><a href="https://www.mediawiki.org/wiki/Extension:Gadgets"><strong>Gadgets</strong></a></td><td id="sQiE" class="">–</td><td id="WTpm" class=""><a href="http://ess-wiki.advantech.com.tw/view/Special:Version/License/Gadgets">License</a></td><td id="G[Hp" class="">Lets users select custom <a href="http://ess-wiki.advantech.com.tw/view/Special:Gadgets">CSS and JavaScript gadgets</a> in their <a href="http://ess-wiki.advantech.com.tw/view/Special:Preferences#mw-prefsection-gadgets">preferences</a></td><td id="T=}L" class="">Daniel Kinzler and Max Semenik</td></tr><tr id="cfcfb104-197d-424d-9021-890873eb0d93"><td id="xuX&gt;" class=""><a href="https://www.mediawiki.org/wiki/Extension:Google_Analytics_Integration"><strong>Google Analytics Integration</strong></a></td><td id="sQiE" class="">3.0.1</td><td id="WTpm" class=""><a href="http://ess-wiki.advantech.com.tw/view/Special:Version/License/Google_Analytics_Integration">GPL-2.0-or-later</a></td><td id="G[Hp" class="">Inserts Google Universal Analytics (and/or other web analytics) scripts into MediaWiki pages for tracking</td><td id="T=}L" class="">Tim Laqua and <a href="https://www.mediawiki.org/wiki/User:DavisNT">Davis Mosenkovs</a></td></tr><tr id="6ed8ccdb-c874-4ca4-8237-9160271b1d4f"><td id="xuX&gt;" class=""><a href="https://www.mediawiki.org/wiki/Extension:LDAP_Authentication"><strong>LDAP Authentication Plugin</strong></a></td><td id="sQiE" class="">2.1.0</td><td id="WTpm" class=""><a href="http://ess-wiki.advantech.com.tw/view/Special:Version/License/LDAP_Authentication_Plugin">GPL-2.0+</a></td><td id="G[Hp" class="">LDAP authentication plugin with support for multiple LDAP authentication methods</td><td id="T=}L" class="">Ryan Lane</td></tr><tr id="9f287f6f-433d-4dbe-981c-b5d2cac28157"><td id="xuX&gt;" class=""><a href="https://www.mediawiki.org/wiki/Extension:LocalisationUpdate"><strong>LocalisationUpdate</strong></a></td><td id="sQiE" class="">1.3.0</td><td id="WTpm" class=""></td><td id="G[Hp" class="">Keeps the localised messages as up to date as possible</td><td id="T=}L" class="">Tom Maaswinkel, Niklas Laxström and Roan Kattouw</td></tr><tr id="148cabbd-2362-4016-8e4c-66af7fbeb4b1"><td id="xuX&gt;" class=""><a href="https://www.mediawiki.org/wiki/Extension:WikiEditor"><strong>WikiEditor</strong></a></td><td id="sQiE" class="">0.4.0</td><td id="WTpm" class=""><a href="http://ess-wiki.advantech.com.tw/view/Special:Version/License/WikiEditor">License</a></td><td id="G[Hp" class="">Provides an extendable wikitext editing interface and many feature-providing modules</td><td id="T=}L" class="">Trevor Parscal, Roan Kattouw, Nimish Gautam and Adam Miller</td></tr><tr id="213a9614-6cab-47f0-a4e9-e14796907dde"><td id="xuX&gt;" class=""><a href="http://www.mediawiki.org/wiki/Extension:WYSIWYG"><strong>WYSIWYG editor</strong></a></td><td id="sQiE" class="">1.5.6_0 [B551+29.11.2015], CKEditor 4.5.4 (revision d4677a3)</td><td id="WTpm" class=""></td><td id="G[Hp" class="">Allow editing using the WYSIWYG editor CKEditor</td><td id="T=}L" class="">Frederico Caldeira Knabben, Wiktor Walc, Jack Phoenix, ontoprise GmbH and MediaWiki community of wysiwyg</td></tr></tbody></table><h2 id="413b96e8-ed03-46e5-b9cd-39c74a7fdb1b" class=""><a href="http://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Tag_extensions">Parser extension tags</a></h2><p id="bd1871e7-fef2-4826-8d76-da33f9b02bb2" class="">&lt;console&gt;, &lt;gallery&gt;, &lt;headertabs&gt;, &lt;imagemap&gt;, &lt;inputbox&gt;, &lt;nowiki&gt;, &lt;poem&gt;, &lt;pre&gt;, &lt;ref&gt;, &lt;references&gt;, &lt;section&gt;, &lt;source&gt;, &lt;syntaxhighlight&gt; and &lt;tabber&gt;</p><h2 id="8f279a61-ddc8-4ed5-af13-2225a8827c92" class=""><a href="http://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Parser_functions">Parser function hooks</a></h2><p id="978d13be-48e6-42ba-8697-99485aca3bdd" class="">anchorencode, basepagename, basepagenamee, canonicalurl, canonicalurle, cargo_attach, cargo_compound_query, cargo_declare, cargo_display_map, cargo_query, cargo_store, cascadingsources, defaultsort, displaytitle, expr, filepath, formatdate, formatnum, fullpagename, fullpagenamee, fullurl, fullurle, gender, grammar, if, ifeq, iferror, ifexist, ifexpr, int, language, lc, lcfirst, localurl, localurle, lst, lsth, lstx, namespace, namespacee, namespacenumber, ns, nse, numberingroup, numberofactiveusers, numberofadmins, numberofarticles, numberofedits, numberoffiles, numberofpages, numberofusers, numberofviews, padleft, padright, pageid, pagename, pagenamee, pagesincategory, pagesize, plural, protectionlevel, recurring_event, rel2abs, revisionday, revisionday2, revisionid, revisionmonth, revisionmonth1, revisiontimestamp, revisionuser, revisionyear, rootpagename, rootpagenamee, special, speciale, subjectpagename, subjectpagenamee, subjectspace, subjectspacee, subpagename, subpagenamee, switch, switchtablink, tag, talkpagename, talkpagenamee, talkspace, talkspacee, time, timel, titleparts, uc, ucfirst and urlencode</p><p id="095867ae-47ec-47e7-9a16-b29548139c4e" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
