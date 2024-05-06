@@ -17,9 +17,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v4
         with:
-          node-version: '18'
+          python-version: '3.x'
 
       - name: Delete previous backup
         run: rm -rf markdown html *.zip
