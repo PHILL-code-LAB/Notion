@@ -13,10 +13,17 @@ jobs:
     name: Backup
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - run: cd packages/website && yarn && yarn build
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        env:
+          FIREBASE_CLI_EXPERIMENTS: webframeworks
         with:
-          node-version: '20'
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_COOLPROJECTNAME }}'
+          channelId: live
+          projectId: coolprojectname
+ 
 
       - name: Run backup script
         run: npm install && npm run backup
