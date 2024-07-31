@@ -28,7 +28,7 @@ jobs:
         run: npm install -g notion-backup
 
       - name: Run backup
-        run: notion-backup
+        run: npm install axios async commander extract-zip notion-client notion-utils && npm install -g . && notion-backup
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_FILE_TOKEN: ${{ secrets.NOTION_FILE_TOKEN }}
