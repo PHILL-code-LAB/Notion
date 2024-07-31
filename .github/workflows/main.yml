@@ -1,50 +1,39 @@
-name: "Notion backup space"
+# This is a basic workflow to help you get started with Actions
 
+name: CI
+
+# Controls when the action will run.
+# on:
+#   # Triggers the workflow on push or pull request events but only for the main branch
+#   push:
+#     branches: [main]
+#   pull_request:
+#     branches: [main]
 on:
-  push:
-    branches:
-      - master
-  schedule:
-    - cron: "0 0 * * *"
-
+  # schedule:
+  #   - cron: "0 7 * * *" # 每天7点执行 , 去掉此处注释开启触发
+  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  backup:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    name: Backup
-    timeout-minutes: 15
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v3
-
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-python@v4.5.0
         with:
-          node-version: '18'
-
-      - name: Delete previous backup
-        run: rm -rf markdown html *.zip
-
-      - name: Setup dependencies
-        run: npm install -g notion-backup
-
-      - name: Run backup
-        run: notion-backup
+          python-version: "3.10"
+      - name: install dependency
+        run: pip3 install requests
+      - name: run notion_backup.py
         env:
-          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-          NOTION_FILE_TOKEN: ${{ secrets.NOTION_FILE_TOKEN }}
-          NOTION_SPACE_ID: ${{ secrets.NOTION_SPACE_ID }}
-          NODE_OPTIONS: "--max-http-header-size 15000"
-
-      - name: Delete zips
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }} # 在后台配置好token,或者用NOTION_EMAIL和NOTION_PASSWORD也可以
         run: |
-          rm -f *.zip
-          rm -f markdown/*-Part*.zip
-          rm -f html/*-Part*.zip
-
-      - name: Commit changes
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add .
-          git commit -m "Automated snapshot"
-          git push
+          echo '开始执行'
+          python notion_backup.py
+          echo '执行完成'
