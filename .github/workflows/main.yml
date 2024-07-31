@@ -1,11 +1,13 @@
-name: "Backup Notion Workspace"
+name: "Notion backup space"
 
 on:
   push:
     branches:
-      - main
+      - master
   schedule:
-    -   cron: "45 0/2 * * *"
+    - cron: "0 0 * * *"
+
+  workflow_dispatch:
 
 jobs:
   backup:
@@ -13,86 +15,36 @@ jobs:
     name: Backup
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+
       - uses: actions/setup-node@v2
         with:
-          node-version: '16'
+          node-version: '18'
 
-      - name: Run backup script
-        run: npm install && npm run backup
+      - name: Delete previous backup
+        run: rm -rf markdown html *.zip
+
+      - name: Setup dependencies
+        run: npm install -g notion-backup
+
+      - name: Run backup
+        run: notion-backup
         env:
-          NOTION_TOKEN: ${{ secrets.NOTION_FILE_TOKEN }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_FILE_TOKEN: ${{ secrets.NOTION_FILE_TOKEN }}
           NOTION_SPACE_ID: ${{ secrets.NOTION_SPACE_ID }}
-          NOTION_USER_ID: ${{ secrets.NOTION_USER_ID }}
+          NODE_OPTIONS: "--max-http-header-size 15000"
 
-      - name: Checkout backup repo
-        uses: actions/checkout@v2
-        with:
-          repository: ${{ secrets.REPO_USERNAME }}/${{ secrets.REPO_NAME }}
-          token: ${{ secrets.REPO_PERSONAL_ACCESS_TOKEN }}
-          path: "backup-repo"
-
-      - name: Commit changes to backup repo
-        env:
-          REPO_EMAIL: ${{ secrets.REPO_EMAIL }}
-          REPO_USERNAME: ${{ secrets.REPO_USERNAME }}
+      - name: Delete zips
         run: |
-          java --version
-          echo ''
-          date
-          echo ''
-          
-          pwd
-          BaseDir=$(pwd)
-          BackupRepo=$(pwd)/backup-repo
-          WorkSpaceDir=$(pwd)/workspace
-          
-          echo '=========================================ls BaseDir'
-          ls -al $BaseDir
-          
-          echo '=========================================ls BackupRepo delete before'
-          ls -al $BackupRepo
-          
-          cd $BackupRepo
-          find * -maxdepth 0 | grep -v ".git" | while read f; do echo "'"$f"'"; done | xargs rm -rf
-          
-          echo '=========================================ls BackupRepo delete after'
-          ls -al $BackupRepo
-          
-          echo '=========================================ls WorkSpaceDir'
-          ls -al $WorkSpaceDir
-          
-          echo $WorkSpaceDir
-          cd $WorkSpaceDir
-          echo '111'
-          exportDirName=$(find * -maxdepth 0 | (grep Export || true))
-          echo '222'
-          echo $exportDirName
-          if [ "$exportDirName" ]; then
-            echo 'exists Export dir'
-            mv $exportDirName workspace
-            WorkSpaceDir=$WorkSpaceDir/workspace
-            echo $WorkSpaceDir'  --after modified'
-          fi
-          echo '333' 
-          
-          cp -a $WorkSpaceDir/* $BackupRepo/
-          
-          echo '=========================================ls BackupRepo cp after'
-          ls -al $BackupRepo
-          
-          cd $BackupRepo  
-          git config --local user.email "${REPO_EMAIL}"
-          git config --local user.name "${REPO_USERNAME}"
-          
-          echo '=========================================git status BackupRepo dir'
-          git status
-          
+          rm -f *.zip
+          rm -f markdown/*-Part*.zip
+          rm -f html/*-Part*.zip
+
+      - name: Commit changes
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           git add .
-          if [ -z "$(git status --porcelain)" ]; then
-            exit 0
-          fi
-          git commit -m "Automated Notion workspace backup"
+          git commit -m "Automated snapshot"
           git push
-          
-          echo '=========================================done'
