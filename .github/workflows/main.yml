@@ -21,7 +21,7 @@ jobs:
       - name: Run backup script
         run: npm install && npm run backup
         env:
-          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_TOKEN: ${{ secrets.NOTION_FILE_TOKEN }}
           NOTION_SPACE_ID: ${{ secrets.NOTION_SPACE_ID }}
           NOTION_USER_ID: ${{ secrets.NOTION_USER_ID }}
 
