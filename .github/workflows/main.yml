@@ -1,13 +1,11 @@
-name: "Notion backup"
+name: "Backup Notion Workspace"
 
 on:
   push:
     branches:
-      - master
+      - main
   schedule:
-    - cron: "0 0 * * *"
-
-  workflow_dispatch:
+    -   cron: "50 12 * * *"
 
 jobs:
   backup:
@@ -16,34 +14,37 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v3
-
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
 
-      - name: Delete previous backup
-        run: rm -rf markdown html *.zip
-
-      - name: Setup dependencies
-        run: npm install -g notion-backup
-
-      - name: Run backup
-        run: notion-backup
+      - name: Run backup script
+        run: npm install && npm run backup
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-          NOTION_FILE_TOKEN: ${{ secrets.NOTION_FILE_TOKEN }}
           NOTION_SPACE_ID: ${{ secrets.NOTION_SPACE_ID }}
-          NODE_OPTIONS: "--max-http-header-size 15000"
-
-      - name: Delete zips
+          NOTION_FILKE_TOKEN: ${{ secrets.NOTION_FILE_TOKEN }}
+          NOTION_USER_ID: ${{ secrets.NOTION_USER_ID }}
+      - name: Checkout backup repo
+        uses: actions/checkout@v4
+        
+        with:
+          repository: ${{ secrets.REPO_USERNAME }}/${{ secrets.REPO_NAME }}
+          token: ${{ secrets.REPO_PERSONAL_ACCESS_TOKEN }}
+          path: "backup-repo"
+          ref: main 
+      - name: Commit changes to backup repo
+        env:
+          REPO_EMAIL: ${{ secrets.REPO_EMAIL }}
+          REPO_USERNAME: ${{ secrets.REPO_USERNAME }}
         run: |
-          rm -f *.zip
-          rm -f markdown/*-Part*.zip
-          rm -f html/*-Part*.zip
-      - name: Commit changes
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
+          cp -a workspace/. backup-repo/
+          cd backup-repo
+          git config --local user.email "${REPO_EMAIL}"
+          git config --local user.name "${REPO_USERNAME}"
           git add .
-          git commit -m "Automated snapshot"
+          if [ -z "$(git status --porcelain)" ]; then
+            exit 0
+          fi
+          git commit -m "Automated Notion workspace backup"
           git push
