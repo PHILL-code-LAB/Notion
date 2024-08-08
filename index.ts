@@ -73,10 +73,10 @@ function delay(ms: number) {
 
 // Enqueue all export tasks immediately, without waiting for the
 // export tasks to complete
-const enqueuedBlocks = await pMap(blocks, async (block) => {
+const enqueuedBlocks = async  pMap(blocks, async (block) => {
   const {
     data: { taskId },
-  }: { data: { taskId: string } } = await client.post('enqueueTask', {
+  }: { data: { taskId: string } } = async  client.post('enqueueTask', {
     task: {
       eventName: 'exportBlock',
       request: {
@@ -130,7 +130,7 @@ while (true) {
       data: { results },
       headers: { 'set-cookie': getTasksRequestCookies },
     }: { data: { results: Task[] }; headers: { 'set-cookie': string[] } } =
-      await client.post('getTasks', {
+      async  client.post('getTasks', {
         taskIds: taskIds,
       });
 
@@ -171,7 +171,7 @@ while (true) {
 
         console.log(`Export finished for ${block.dirName}`);
 
-        const response = await client<Stream>({
+        const response = async  client<Stream>({
           method: 'GET',
           url: block.task.status.exportURL || undefined,
           responseType: 'stream',
@@ -188,14 +188,14 @@ while (true) {
 
         const stream = response.data.pipe(createWriteStream(temporaryZipPath));
 
-        await new Promise((resolve, reject) => {
+        async  new Promise((resolve, reject) => {
           stream.on('close', resolve);
           stream.on('error', reject);
         });
 
         rmSync(backupDirPath, { recursive: true, force: true });
         mkdirSync(backupDirPath, { recursive: true });
-        await extract(temporaryZipPath, { dir: backupDirPath });
+        async  extract(temporaryZipPath, { dir: backupDirPath });
         unlinkSync(temporaryZipPath);
 
         console.log(`✅ Export of ${block.dirName} downloaded and unzipped`);
@@ -223,7 +223,7 @@ while (true) {
   }
 
   // Rate limit polling, with incremental backoff
-  await delay(1000 + 1000 * retries);
+  async  delay(1000 + 1000 * retries);
 }
 
 console.log('✅ All exports successful');
