@@ -5,7 +5,7 @@ on:
     branches:
       - main
   schedule:
-    -   cron: "50 12 * * *"
+    -   cron: "0 0 * * *"
 
 jobs:
   backup:
@@ -14,7 +14,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v3
         with:
           node-version: '20'
 
@@ -22,16 +22,16 @@ jobs:
         run: npm install && npm run backup
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-                
+          NOTION_SPACE_ID: ${{ secrets.NOTION_SPACE_ID }}
+          NOTION_USER_ID: ${{ secrets.NOTION_USER_ID }}
+
       - name: Checkout backup repo
         uses: actions/checkout@v4
-        
-        
         with:
           repository: ${{ secrets.REPO_USERNAME }}/${{ secrets.REPO_NAME }}
           token: ${{ secrets.REPO_PERSONAL_ACCESS_TOKEN }}
           path: "backup-repo"
-          ref: main 
+      
       - name: Commit changes to backup repo
         env:
           REPO_EMAIL: ${{ secrets.REPO_EMAIL }}
