@@ -1,229 +1,185 @@
-import { createWriteStream, mkdirSync, rmSync, unlinkSync } from 'node:fs';
-import path from 'node:path';
-import { Stream } from 'node:stream';
-import axios from 'axios';
-import extract from 'extract-zip';
-import pMap from 'p-map';
+import "dotenv/config";
+import axios from "axios";
+import AdmZip from "adm-zip";
+import { createWriteStream, promises as fs } from "fs";
+import { join } from "path";
 
-const blocks = [
-  {
-    // Find the page block ID by either:
-    // 1. Copying the alphanumeric part at the end of the Notion
-    //    page URL and separate it with dashes in the same format
-    //    as below (number of characters between dashes:
-    //    8-4-4-4-12)
-    // 2. Inspecting network requests in the DevTools
-    id: 'c5c30966-e244-4d18-b983-3982a66a4e9',
-    // Find the space ID associated with a block by running this
-    // in the DevTools Console while on the page you want to
-    // export:
-    // ```
-    // $('img[src*="spaceId="]').src.replace(/^.+&spaceId=([^&]+)&.+$/, '$1')
-    // ```
-    spaceId: '83099241-3059-4c18-88e1-dee8f77ab75e',
-    // Choose a directory name for your export to appear in the
-    // `exports` folder
-    dirName: 'notion-page-a',
-    // Should all of the subpages also be exported?
-    recursive: false,
-  },
-];
-
-if (!process.env.NOTION_TOKEN) {
-  console.error(
-    'Environment variable NOTION_TOKEN is missing. Check the README.md for more information.',
-  );
-  process.exit(1);
-}
-
-type BlockTask = {
+type NotionTask = {
   id: string;
-  state: string | null;
+  state: string;
   status: {
-    pagesExported: number | null;
-    exportURL: string | null;
+    pagesExported: number;
+    exportURL: string;
   };
+  error?: string;
 };
 
-type Task = {
-  id: string;
-  state: string | null;
-  status?: {
-    pagesExported: number | null;
-    exportURL: string | null;
-  };
-};
+const { NOTION_TOKEN, NOTION_SPACE_ID, NOTION_USER_ID } = process.env;
+if (!NOTION_TOKEN || !NOTION_SPACE_ID || !NOTION_USER_ID) {
+  throw new Error(
+    "Environment variable NOTION_TOKEN, NOTION_SPACE_ID or NOTION_USER_ID is missing. Check the README.md for more information."
+  );
+}
 
 const client = axios.create({
-  // Notion unofficial API
-  baseURL: 'https://www.notion.so/api/v3',
+  baseURL: "https://www.notion.so/api/v3", // Unofficial Notion API
   headers: {
-    Cookie: `token_v2=${process.env.NOTION_TOKEN}`,
+    Cookie: `token_v2=${NOTION_TOKEN};`,
+    "x-notion-active-user-header": NOTION_USER_ID,
   },
 });
 
-function delay(ms: number) {
-  console.log(
-    `Waiting ${ms / 1000} second${ms > 1000 ? 's' : ''} before polling again...`,
-  );
+const sleep = async (seconds: number): Promise<void> => {
   return new Promise((resolve) => {
-    setTimeout(resolve, ms);
+    setTimeout(resolve, seconds * 1000);
   });
-}
+};
 
-// Enqueue all export tasks immediately, without waiting for the
-// export tasks to complete
-const enqueuedBlocks = async  pMap(blocks, async (block) => {
+const round = (number: number) => Math.round(number * 100) / 100;
+
+const exportFromNotion = async (
+  destination: string,
+  format: string
+): Promise<void> => {
+  const task = {
+    eventName: "exportSpace",
+    request: {
+      spaceId: NOTION_SPACE_ID,
+      shouldExportComments: false,
+      exportOptions: {
+        exportType: format,
+        collectionViewExportType: "currentView",
+        timeZone: "Europe/Berlin",
+        locale: "en",
+        preferredViewMap: {},
+      },
+    },
+  };
   const {
     data: { taskId },
-  }: { data: { taskId: string } } = async  client.post('enqueueTask', {
-    task: {
-      eventName: 'exportBlock',
-      request: {
-        block: {
-          id: block.id,
-          spaceId: block.spaceId,
-        },
-        exportOptions: {
-          exportType: 'markdown',
-          locale: 'en',
-          timeZone: 'Europe/Vienna',
-        },
-        recursive: block.recursive,
-      },
-    },
-  });
+  }: { data: { taskId: string } } = await client.post("enqueueTask", { task });
 
-  if (!taskId) {
-    throw new Error('No taskId returned from enqueueTask');
-  }
+  console.log(`Started export as task [${taskId}].`);
 
-  console.log(`Started export of block ${block.dirName} as task ${taskId}`);
+  let exportURL: string;
+  let fileTokenCookie: string | undefined;
+  let retries = 0;
 
-  const task: BlockTask = {
-    id: taskId,
-    state: null,
-    status: {
-      pagesExported: null,
-      exportURL: null,
-    },
-  };
+  while (true) {
+    await sleep(2 ** retries); // Exponential backoff
+    try {
+      const {
+        data: { results: tasks },
+        headers: { "set-cookie": getTasksRequestCookies },
+      }: {
+        data: { results: NotionTask[] };
+        headers: { [key: string]: string[] };
+      } = await client.post("getTasks", { taskIds: [taskId] });
+      const task = tasks.find((t) => t.id === taskId);
 
-  return {
-    ...block,
-    task: task,
-  };
-});
+      if (!task) throw new Error(`Task [${taskId}] not found.`);
+      if (task.error) throw new Error(`Export failed with reason: ${task.error}`);
 
-let retries = 0;
+      console.log(`Exported ${task.status.pagesExported} pages.`);
 
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-while (true) {
-  const incompleteEnqueuedBlocks = enqueuedBlocks.filter(
-    ({ task }) => task.state !== 'success',
-  );
-
-  const taskIds = incompleteEnqueuedBlocks.map(({ task }) => task.id);
-
-  try {
-    const {
-      data: { results },
-      headers: { 'set-cookie': getTasksRequestCookies },
-    }: { data: { results: Task[] }; headers: { 'set-cookie': string[] } } =
-      async  client.post('getTasks', {
-        taskIds: taskIds,
-      });
-
-    const blocksWithTaskProgress = results.reduce(
-      (blocksAcc, task) => {
-        const block = enqueuedBlocks.find(({ task: { id } }) => id === task.id);
-
-        if (!block || !task.status) return blocksAcc;
-
-        // Mutate original object in enqueuedBlocks for while loop
-        // exit condition
-        block.task.state = task.state;
-        block.task.status.pagesExported = task.status.pagesExported;
-        block.task.status.exportURL = task.status.exportURL;
-
-        return blocksAcc.concat(block);
-      },
-      [] as typeof incompleteEnqueuedBlocks,
-    );
-
-    for (const block of blocksWithTaskProgress) {
-      console.log(
-        `Exported ${block.task.status.pagesExported} pages for ${block.dirName}`,
-      );
-
-      if (block.task.state === 'success') {
-        const backupDirPath = path.join(
-          process.cwd(),
-          'exports',
-          block.dirName,
+      if (task.state === "success") {
+        exportURL = task.status.exportURL;
+        fileTokenCookie = getTasksRequestCookies.find((cookie) =>
+          cookie.includes("file_token=")
         );
-
-        const temporaryZipPath = path.join(
-          process.cwd(),
-          'exports',
-          `${block.dirName}.zip`,
-        );
-
-        console.log(`Export finished for ${block.dirName}`);
-
-        const response = async  client<Stream>({
-          method: 'GET',
-          url: block.task.status.exportURL || undefined,
-          responseType: 'stream',
-          headers: {
-            Cookie: getTasksRequestCookies.find((cookie) =>
-              cookie.includes('file_token='),
-            ),
-          },
-        });
-
-        const sizeInMb =
-          Number(response.headers['content-length']) / 1000 / 1000;
-        console.log(`Downloading ${Math.round(sizeInMb * 1000) / 1000}mb...`);
-
-        const stream = response.data.pipe(createWriteStream(temporaryZipPath));
-
-        async  new Promise((resolve, reject) => {
-          stream.on('close', resolve);
-          stream.on('error', reject);
-        });
-
-        rmSync(backupDirPath, { recursive: true, force: true });
-        mkdirSync(backupDirPath, { recursive: true });
-        async  extract(temporaryZipPath, { dir: backupDirPath });
-        unlinkSync(temporaryZipPath);
-
-        console.log(`✅ Export of ${block.dirName} downloaded and unzipped`);
+        if (!fileTokenCookie) {
+          throw new Error("Task finished but file_token cookie not found.");
+        }
+        console.log(`Export finished.`);
+        break;
       }
-    }
 
-    // If all blocks are done, break out of the loop
-    if (!enqueuedBlocks.find(({ task }) => task.state !== 'success')) {
-      break;
-    }
+      // Reset retries on success
+      retries = 0;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 429) {
+        console.log("Received response with HTTP 429 (Too Many Requests), retrying after backoff.");
+        retries += 1;
+        continue;
+      }
 
-    // Reset retries on success
-    retries = 0;
-  } catch (error) {
-    if (!axios.isAxiosError(error) || error.response?.status !== 429) {
-      // Rethrow errors which do not contain an HTTP 429 status
-      // code
+      // Rethrow if it's not a 429 error
       throw error;
     }
-
-    console.log(
-      'Received response with HTTP 429 (Too Many Requests), increasing delay...',
-    );
-    retries += 1;
   }
 
-  // Rate limit polling, with incremental backoff
-  async  delay(1000 + 1000 * retries);
-}
+  const response = await client({
+    method: "GET",
+    url: exportURL,
+    responseType: "stream",
+    headers: { Cookie: fileTokenCookie },
+  });
 
-console.log('✅ All exports successful');
+  const size = response.headers["content-length"];
+  console.log(`Downloading ${round(size / 1000 / 1000)}mb...`);
+
+  const stream = response.data.pipe(createWriteStream(destination));
+  await new Promise((resolve, reject) => {
+    stream.on("close", resolve);
+    stream.on("error", reject);
+  });
+};
+
+const extractZip = async (
+  filename: string,
+  destination: string
+): Promise<void> => {
+  const zip = new AdmZip(filename);
+  zip.extractAllTo(destination, true);
+
+  const extractedFiles = zip.getEntries().map((entry) => entry.entryName);
+  const partFiles = extractedFiles.filter((name) =>
+    name.match(/Part-\d+\.zip/)
+  );
+
+  // Extract found "Part-*.zip" files to destination and delete them:
+  await Promise.all(
+    partFiles.map(async (partFile: string) => {
+      partFile = join(destination, partFile);
+      const partZip = new AdmZip(partFile);
+      partZip.extractAllTo(destination, true);
+      await fs.unlink(partFile);
+    })
+  );
+
+  const extractedFolders = await fs.readdir(destination);
+  const exportFolders = extractedFolders.filter((name: string) =>
+    name.startsWith("Export-")
+  );
+
+  // Move the contents of found "Export-*" folders to destination and delete them:
+  await Promise.all(
+    exportFolders.map(async (folderName: string) => {
+      const folderPath = join(destination, folderName);
+      const contents = await fs.readdir(folderPath);
+      await Promise.all(
+        contents.map(async (file: string) => {
+          const filePath = join(folderPath, file);
+          const newFilePath = join(destination, file);
+          await fs.rename(filePath, newFilePath);
+        })
+      );
+      await fs.rmdir(folderPath);
+    })
+  );
+};
+
+const run = async (): Promise<void> => {
+  const workspaceDir = join(process.cwd(), "workspace");
+  const workspaceZip = join(process.cwd(), "workspace.zip");
+
+  await exportFromNotion(workspaceZip, "markdown");
+  await fs.rm(workspaceDir, { recursive: true, force: true });
+  await fs.mkdir(workspaceDir, { recursive: true });
+  await extractZip(workspaceZip, workspaceDir);
+  await fs.unlink(workspaceZip);
+
+  console.log("✅ Export downloaded and unzipped.");
+};
+
+run();
