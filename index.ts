@@ -18,7 +18,7 @@ type NotionTask = {
 const notionToken = process.env.NOTION_TOKEN;
 const notionSpaceId = process.env.NOTION_SPACE_ID;
 const notionUserId = process.env.NOTION_USER_ID;
-if (!NOTION_TOKEN || !NOTION_SPACE_ID || !NOTION_USER_ID) {
+if (!notionToken || !notionSpaceId || !notionUserId) { 
   throw new Error(
     "Environment variable NOTION_TOKEN, NOTION_SPACE_ID or NOTION_USER_ID is missing. Check the README.md for more information."
   );
