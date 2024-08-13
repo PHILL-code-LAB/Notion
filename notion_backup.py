@@ -13,7 +13,7 @@ from notify import send
 # block id格式切记为-隔开!!!
 DEFAULT_BACKUP_CONFIG = {
     'spaces': [{
-        'space_name': 'space_name',
+        'space_name': 'PHILL's Notion',
         'space_blocks': [{
             'block_id': 'd1e83bc9788f46e68c6655b918bec32f',
             'block_name': 'Home1'
